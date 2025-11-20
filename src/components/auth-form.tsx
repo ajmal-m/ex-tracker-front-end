@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 
 type PropType = {
     AuthType : string;
@@ -21,7 +22,6 @@ const AuthForm = memo(( { AuthType } : PropType) => {
     const handleSubmit = useCallback((e : React.FormEvent<HTMLFormElement> ) => {
         try {
             e.preventDefault();
-            console.log(authData)
         } catch (error) {
             console.log(error);
         }
@@ -30,7 +30,7 @@ const AuthForm = memo(( { AuthType } : PropType) => {
 
     return(
         <div className="min-w-80 min-h-80 bg-[#101828] dark:bg-[#101828] rounded border flex items-center justify-center">
-            <form onSubmit={handleSubmit} className="w-full px-4 flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="w-full p-4 flex flex-col gap-4">
                 <h1 className="text-center text-white text-3xl font-bold">{AuthType} Account</h1>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="text-white text-sm font-regular">Email</label>
@@ -57,6 +57,13 @@ const AuthForm = memo(( { AuthType } : PropType) => {
                 >
                     {AuthType}
                 </button>
+                <div className="text-center text-white underline">
+                    <Link to={`${ AuthType === "Sign Up" ? '/login' : '/sign-up' }`}>
+                    {
+                        AuthType === "Sign Up" ? 'Login account' : 'create a new account'
+                    }
+                    </Link>
+                </div>
             </form>
         </div>
     )

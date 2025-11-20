@@ -1,10 +1,11 @@
 import { memo } from "react";
+import AuthForm from "../components/auth-form";
 
 const SignUpPage = memo(() => {
     return(
-        <>
-            <h1>SIgn up Page</h1>
-        </>
+        <div className="flex items-center justify-center h-screen bg-[#030712]">
+            <AuthForm AuthType="Sign Up"/>
+        </div>
     )
 });
 
