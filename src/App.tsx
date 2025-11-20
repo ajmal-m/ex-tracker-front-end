@@ -1,14 +1,26 @@
 
 import { lazy, Suspense } from 'react';
 import { Route, Routes} from 'react-router-dom';
+import {Toaster} from 'react-hot-toast';
+
 const LoginPage = lazy(() => import('./pages/login'));
 const SignUpPage = lazy(() => import('./pages/sign-up'));
+const DashboardPage = lazy(() => import('./pages/dashboard'));
+
 
 
 function App() {
   return (
     <>
       <Routes>
+        <Route
+          path='/'
+          element={
+            <Suspense fallback={<>Loading....</>}>
+              <DashboardPage/>
+            </Suspense>
+          }
+        />
         <Route path='/login' 
           element={
             <Suspense fallback={<>Loading...</>} >
@@ -24,6 +36,7 @@ function App() {
           } 
         />
       </Routes>
+      <Toaster/>
     </>
   )
 }

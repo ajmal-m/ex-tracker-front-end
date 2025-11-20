@@ -1,5 +1,7 @@
 import React, { memo, useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
+import toast from 'react-hot-toast';
 
 type PropType = {
     AuthType : string;
@@ -7,6 +9,7 @@ type PropType = {
 
 const AuthForm = memo(( { AuthType } : PropType) => {
     const [authData, setAuthData] = useState({ email :"" , password:""});
+    const navigate = useNavigate();
 
     const updateAuthData = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         try {
@@ -18,12 +21,18 @@ const AuthForm = memo(( { AuthType } : PropType) => {
     },[]);
 
 
-    const handleSubmit = useCallback((e : React.FormEvent<HTMLFormElement> ) => {
+    const handleSubmit = useCallback(async(e : React.FormEvent<HTMLFormElement> ) => {
         try {
             e.preventDefault();
-            console.log(authData)
-        } catch (error) {
-            console.log(error);
+            const endPoint = AuthType === "Sign Up" ? '/auth/sign-up' : '/auth/log-in';
+            const {data} = await axiosInstance.post(endPoint, { ...authData});
+            toast.success(data?.message);
+
+            navigate("/");
+        } catch (error : any) {
+            const message = error?.response?.data?.message;
+            toast.error(message);
+            console.log("error", error)
         }
     },[authData])
 
