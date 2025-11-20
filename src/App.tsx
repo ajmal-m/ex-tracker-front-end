@@ -7,6 +7,8 @@ const LoginPage = lazy(() => import('./pages/login'));
 const SignUpPage = lazy(() => import('./pages/sign-up'));
 const DashboardPage = lazy(() => import('./pages/dashboard'));
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 
 function App() {
@@ -17,7 +19,9 @@ function App() {
           path='/'
           element={
             <Suspense fallback={<>Loading....</>}>
-              <DashboardPage/>
+              <ProtectedRoute>
+                <DashboardPage/>
+              </ProtectedRoute>
             </Suspense>
           }
         />
