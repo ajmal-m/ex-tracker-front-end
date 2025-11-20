@@ -11,17 +11,17 @@ const AuthForm = memo(( { AuthType } : PropType) => {
     const updateAuthData = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         try {
             const {name, value} = e.target;
-            const newAuthData = { ...authData, [name]: value };
-            setAuthData(newAuthData);
+            setAuthData( prev => ({ ...prev , [name]: value }));
         } catch (error) {
             console.log(error); 
         }
-    },[authData]);
+    },[]);
 
 
     const handleSubmit = useCallback((e : React.FormEvent<HTMLFormElement> ) => {
         try {
             e.preventDefault();
+            console.log(authData)
         } catch (error) {
             console.log(error);
         }
