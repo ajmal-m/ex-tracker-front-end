@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import dateReducer from "./dateSlice";
 import categoryReducer from './categorySlice';
+import budgetReducer from './budgetSlice';
 
 export const store = configureStore({
   reducer: {
     date: dateReducer,
-    category: categoryReducer
+    category: categoryReducer,
+    budget: budgetReducer
   },
 });
 

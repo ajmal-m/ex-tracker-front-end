@@ -1,40 +1,40 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import AddCategoryModel from "./add-category-model";
 import DeleteModel from "./delete-model";
+import { getBudgets } from "../api/budget.api";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store/store";
+import { setBudgets } from "../store/budgetSlice";
 
-type Product = {
-    name: string;
-    color: string;
-    category: string;
-    price: string;
-    stock: number;
+type Budget = {
+    limit: number;
+    categoryId:{
+        name: string
+    }
 };
 
-const products: Product[] = [
-    {
-        name: 'Apple MacBook Pro 17"',
-        color: "Silver",
-        category: "Laptop",
-        price: "$2999",
-        stock: 231,
-    },
-    {
-        name: "Microsoft Surface Pro",
-        color: "White",
-        category: "Laptop PC",
-        price: "$1999",
-        stock: 423,
-    },
-    {
-        name: "Magic Mouse 2",
-        color: "Black",
-        category: "Accessories",
-        price: "$99",
-        stock: 121,
-    },
-];
 
 const BudgetTable: React.FC = () => {
+    const { budgets } = useSelector((store : RootState ) => store.budget );
+    const {month , year} = useSelector((store : RootState) => store.date);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const fetchBudgets = useCallback( async () => {
+        const data = await getBudgets({
+            month,
+            year
+        });
+        if(data?.budgets){
+            dispatch(setBudgets({ budgets : data.budgets }));
+        }
+    },[month, year]);
+
+
+    useEffect(() => {
+        fetchBudgets()
+    },[month, year]);
+
+
     return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
             <table className="w-full text-sm text-left rtl:text-right text-body">
@@ -47,7 +47,7 @@ const BudgetTable: React.FC = () => {
                 </thead>
 
                 <tbody>
-                    {products.map((item, index) => (
+                    {budgets.map((item : Budget, index) => (
                         <tr
                             key={index}
                             className="bg-blue-950 border-b border-default last:border-none text-white"
@@ -56,10 +56,10 @@ const BudgetTable: React.FC = () => {
                                 scope="row"
                                 className="px-6 py-4 font-medium text-heading whitespace-nowrap"
                             >
-                                {item.name}
+                                {item.categoryId.name}
                             </th>
                             <td className="px-6 py-4">
-                                600
+                                {item.limit}
                             </td>  
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-2">

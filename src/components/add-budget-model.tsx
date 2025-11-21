@@ -1,18 +1,65 @@
-import { memo, useCallback, useState } from "react";
-
+import { memo, useCallback, useEffect, useState } from "react";
+import { type AppDispatch, type RootState } from "../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { createBudgets, getBudgets } from "../api/budget.api";
+import { getCategories } from "../api/category.api";
+import toast from "react-hot-toast";
+import { setBudgets } from "../store/budgetSlice";
 
 const AddBudgetModel = memo(( { text } : { text : string}) => {
-    const [open, setOpen] = useState(false);
 
+    const [open, setOpen] = useState(false);
+    const {month, year} = useSelector((store : RootState) => store.date);
+    const [categories, setCategories] = useState([]);
     const [ budgetData, setBudgetdata] = useState({
        categoryId:"",
        limit:0
     });
+    const dispatch = useDispatch<AppDispatch>();
+
+
+    const fetchCategories = useCallback(async () => {
+        try {
+            const data = await getCategories({});
+            if(data.categories.length){
+                setCategories(data.categories);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    },[]);
+
+
+    useEffect(() => {
+        fetchCategories();
+    } ,[]);
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setBudgetdata(prev => ({ ...prev, [name]: value }));
+        try {
+            const { name, value } = e.target;
+            setBudgetdata(prev => ({ ...prev, [name]: value }));
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
+
+
+    const handleSubmit = useCallback( async ( e : React.FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault();
+            const data = await createBudgets({ categoryId : budgetData.categoryId , month :Number(month), year : Number(year), limit : Number(budgetData.limit) });
+           if(!data){
+            return toast.error("This category already has a budget for the selected month and year")
+           }
+           const res = await getBudgets({ month , year });
+           dispatch(setBudgets({ budgets : res?.budgets || [] }));
+           setOpen(false);
+        } catch (error) {
+            console.log(error);
+        }
+    },[budgetData , month , year])
+
+
     return(
         <>
             <button className="
@@ -30,16 +77,20 @@ const AddBudgetModel = memo(( { text } : { text : string}) => {
                             rounded border flex items-center justify-center"
                              onClick={(e) => e.stopPropagation()}
                         >
-                            <form action="" className="w-full p-4 flex flex-col gap-4">
+                            <form onSubmit={handleSubmit} className="w-full p-4 flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="category" className="text-xs text-white">Category</label>
                                     <select 
                                         name="categoryId" id="category"  
-                                        className="border border-white p-2 text-white rounded"
-                                         value={budgetData.categoryId}
+                                        className="border border-white bg-blue-800 p-2 text-white rounded"
+                                        value={budgetData.categoryId}
                                         onChange={handleChange}
                                     >
-                                        <option value="Cate">categdqwdq</option>
+                                        {
+                                            categories.map((item : { name : string ; _id : string;}) => (
+                                                <option value={item._id}>{item.name}</option>
+                                            ))
+                                        }
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
