@@ -1,6 +1,7 @@
 import { memo } from "react";
 import ProgressBar from "./progress-bar";
 import Badge from "./badge";
+import AddExpenseModel from "./add-expense-model";
 
 
 export const CategoryCard = memo(() => {
@@ -15,7 +16,7 @@ export const CategoryCard = memo(() => {
             <ProgressBar limit={5000} spent={3400}/>
             <p>Remaining : 2000</p>
             <Badge/>
-            <button className="self-end px-3 py-1 bg-blue-800 text-white rounded font-medium cursor-pointer">Add Expense</button>
+            <AddExpenseModel/>
         </div>
     )
 });
