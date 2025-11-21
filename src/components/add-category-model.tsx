@@ -1,4 +1,6 @@
 import { memo, useCallback, useState } from "react";
+import axiosInstance from "../api/axiosInstance";
+import toast from "react-hot-toast";
 
 
 const AddCategoryModel = memo(( { text } : { text : string}) => {
@@ -12,6 +14,24 @@ const AddCategoryModel = memo(( { text } : { text : string}) => {
         const { name, value } = e.target;
         setCategoryData(prev => ({ ...prev, [name]: value }));
     }, []);
+
+
+    const handleSubmit = useCallback(async ( e : React.FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault()
+            const {data} = await axiosInstance.post('/category/create', {
+                ...categoryData
+            });
+            if(data?.message){
+                toast.success(data.message);
+            }
+            setOpen(false);
+            setCategoryData({ name:""})
+        } catch (error) {
+            console.log(error);
+        }
+    },[categoryData]);
+
     return(
         <>
             <button className="
@@ -29,7 +49,7 @@ const AddCategoryModel = memo(( { text } : { text : string}) => {
                             rounded border flex items-center justify-center"
                              onClick={(e) => e.stopPropagation()}
                         >
-                            <form action="" className="w-full p-4 flex flex-col gap-4">
+                            <form onSubmit={handleSubmit} className="w-full p-4 flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="name" className="text-white">Name</label>
                                     <input 
