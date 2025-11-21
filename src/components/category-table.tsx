@@ -1,40 +1,46 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddCategoryModel from "./add-category-model";
 import DeleteModel from "./delete-model";
+import axiosInstance from "../api/axiosInstance";
+import toast from "react-hot-toast";
+import { getCategories  } from "../api/category.api";
+import { useDispatch, useSelector } from "react-redux";
+import { type AppDispatch, type RootState } from "../store/store";
+import { setCategories } from "../store/categorySlice";
 
-type Product = {
+type Category = {
     name: string;
-    color: string;
-    category: string;
-    price: string;
-    stock: number;
+    _id:string;
 };
 
-const products: Product[] = [
-    {
-        name: 'Apple MacBook Pro 17"',
-        color: "Silver",
-        category: "Laptop",
-        price: "$2999",
-        stock: 231,
-    },
-    {
-        name: "Microsoft Surface Pro",
-        color: "White",
-        category: "Laptop PC",
-        price: "$1999",
-        stock: 423,
-    },
-    {
-        name: "Magic Mouse 2",
-        color: "Black",
-        category: "Accessories",
-        price: "$99",
-        stock: 121,
-    },
-];
 
 const CategoryTable: React.FC = () => {
+
+    const {categories} = useSelector((store : RootState) => store.category);
+    const dispatch = useDispatch<AppDispatch>();
+
+    const fetchCategories = useCallback(async () => {
+        const data = await getCategories({});
+        if(data?.categories?.length){
+            dispatch(setCategories({ categories : data.categories }));
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchCategories();
+    },[])
+
+    const deleteCategory = useCallback(async (id : string) => {
+        try {
+            const {data} = await axiosInstance.delete(`/category?id=${id}`);
+            toast.success(data.message);
+            fetchCategories();
+        } catch (error) {
+            console.log(error);
+        }
+    },[]);
+
+
     return (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
             <table className="w-full text-sm text-left rtl:text-right text-body">
@@ -46,7 +52,7 @@ const CategoryTable: React.FC = () => {
                 </thead>
 
                 <tbody>
-                    {products.map((item, index) => (
+                    { categories.length > 0 && categories.map((item : Category, index) => (
                         <tr
                             key={index}
                             className="bg-blue-950 border-b border-default last:border-none text-white"
@@ -59,8 +65,8 @@ const CategoryTable: React.FC = () => {
                             </th>
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-2">
-                                   <AddCategoryModel text={"Edit"}/>
-                                    <DeleteModel/>
+                                   <AddCategoryModel text={"Edit"} category={item}/>
+                                    <DeleteModel deleteFunction={deleteCategory} id={item._id}/>
                                 </div>
                             </td>          
                         </tr>

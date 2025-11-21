@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 
 
-const DeleteModel = memo(( ) => {
+const DeleteModel = memo(( { deleteFunction , id } : { deleteFunction : (val : string) => void , id : string } ) => {
     const [open, setOpen] = useState(false);
 
     return(
@@ -35,7 +35,7 @@ const DeleteModel = memo(( ) => {
                                 <button className="
                                     self-end px-3 py-1 bg-red-900 text-white 
                                     rounded font-medium cursor-pointer"
-                                    onClick={() => setOpen(true)}
+                                    onClick={() => { deleteFunction(id); setOpen(false)} }
                                 >
                                     Delete
                                 </button>

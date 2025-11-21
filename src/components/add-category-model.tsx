@@ -1,14 +1,18 @@
 import { memo, useCallback, useState } from "react";
-import axiosInstance from "../api/axiosInstance";
 import toast from "react-hot-toast";
+import { createCategory , getCategories, updateCategory } from "../api/category.api";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
+import { setCategories } from "../store/categorySlice";
 
 
-const AddCategoryModel = memo(( { text } : { text : string}) => {
+const AddCategoryModel = memo(( { text , category } : { text : string ; category ?: { name:string; _id: string} }) => {
+
     const [open, setOpen] = useState(false);
-
     const [ categoryData, setCategoryData] = useState({
-       name:""
+       name: category?.name || ""
     });
+    const dispatch = useDispatch<AppDispatch>();
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -18,14 +22,21 @@ const AddCategoryModel = memo(( { text } : { text : string}) => {
 
     const handleSubmit = useCallback(async ( e : React.FormEvent<HTMLFormElement>) => {
         try {
-            e.preventDefault()
-            const {data} = await axiosInstance.post('/category/create', {
-                ...categoryData
-            });
-            if(data?.message){
-                toast.success(data.message);
+            e.preventDefault();
+            if(text !== "Edit"){
+                const data = await createCategory({ name : categoryData.name });
+                if(data?.message){
+                    toast.success(data.message);
+                }
+            }else{
+                const data = await updateCategory({ name  : categoryData.name, id: category?._id});
+                if(data?.message){
+                    toast.success(data.message);
+                }
             }
             setOpen(false);
+            const { categories } = await getCategories({});
+            dispatch(setCategories({ categories}))
             setCategoryData({ name:""})
         } catch (error) {
             console.log(error);

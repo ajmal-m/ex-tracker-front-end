@@ -13,7 +13,7 @@ const Navbar = memo(() => {
 
     return(
         <nav className="w-full h-14 bg-[#101828] px-4 flex items-center justify-between fixed max-[415px]:bottom-0">
-            <h1 className="text-white text-xl max-[400px]:text-sm">{month} {year}</h1>
+            <h1 className="text-white text-xl max-[400px]:text-sm">{months[month]} {year}</h1>
 
             <div className="flex items-center gap-3">
                 <div className="flex items-center gap-4 max-[414px]:text-[12px]">
@@ -29,8 +29,8 @@ const Navbar = memo(() => {
                         className="text-white rounded bg-black px-3 py-1 max-[400px]:text-sm"
                     >
                         {
-                            months.map((month) => (
-                                <option  value={month} key={month}>
+                            months.map((month , index) => (
+                                <option  value={index} key={month}>
                                     {month}
                                 </option>
                             ))
