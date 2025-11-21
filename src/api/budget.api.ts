@@ -35,18 +35,19 @@ export const createBudgets = async (
 };
 
 export const updateBudget = async (
-        { categoryId , limit , month , year } : 
+        { categoryId , limit , month , year , id } : 
         { 
             categoryId : string; limit : number ; 
-            month : number; year: number 
+            month : number; year: number ; id: string
         }
     ) => {
     try {
-        const {data} = await axiosInstance.put("/budget/create", {
+        const {data} = await axiosInstance.put("/budget", {
             categoryId,
             limit,
             month,
-            year
+            year,
+            id
         });
         return data;
     } catch (error) {

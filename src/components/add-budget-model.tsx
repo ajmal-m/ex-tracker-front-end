@@ -1,19 +1,28 @@
 import { memo, useCallback, useEffect, useState } from "react";
 import { type AppDispatch, type RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { createBudgets, getBudgets } from "../api/budget.api";
+import { createBudgets, getBudgets, updateBudget } from "../api/budget.api";
 import { getCategories } from "../api/category.api";
 import toast from "react-hot-toast";
 import { setBudgets } from "../store/budgetSlice";
 
-const AddBudgetModel = memo(( { text } : { text : string}) => {
+type Budget = {
+    _id:string;
+    limit: number;
+    categoryId:{
+        _id:string;
+        name: string
+    }
+};
+
+const AddBudgetModel = memo(( { text  , budget} : { text : string , budget ?: Budget ,   }) => {
 
     const [open, setOpen] = useState(false);
     const {month, year} = useSelector((store : RootState) => store.date);
     const [categories, setCategories] = useState([]);
     const [ budgetData, setBudgetdata] = useState({
-       categoryId:"",
-       limit:0
+       categoryId: budget?.categoryId?._id || "",
+       limit: budget?.limit
     });
     const dispatch = useDispatch<AppDispatch>();
 
@@ -47,7 +56,12 @@ const AddBudgetModel = memo(( { text } : { text : string}) => {
     const handleSubmit = useCallback( async ( e : React.FormEvent<HTMLFormElement>) => {
         try {
             e.preventDefault();
-            const data = await createBudgets({ categoryId : budgetData.categoryId , month :Number(month), year : Number(year), limit : Number(budgetData.limit) });
+            let data;
+            if(text !== "Edit"){
+                data = await createBudgets({ categoryId : budgetData.categoryId , month :Number(month), year : Number(year), limit : Number(budgetData.limit) });
+            }else{
+                data = await updateBudget({ categoryId : budgetData.categoryId , month :Number(month), year : Number(year), limit : Number(budgetData.limit) , id : budget?._id || "" });
+            }
            if(!data){
             return toast.error("This category already has a budget for the selected month and year")
            }
@@ -57,7 +71,7 @@ const AddBudgetModel = memo(( { text } : { text : string}) => {
         } catch (error) {
             console.log(error);
         }
-    },[budgetData , month , year])
+    },[budgetData , month , year , budget])
 
 
     return(

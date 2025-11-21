@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect } from "react";
-import AddCategoryModel from "./add-category-model";
 import DeleteModel from "./delete-model";
-import { getBudgets } from "../api/budget.api";
+import { deleteBudgets, getBudgets } from "../api/budget.api";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import { setBudgets } from "../store/budgetSlice";
+import AddBudgetModel from "./add-budget-model";
 
 type Budget = {
+    _id:string;
     limit: number;
     categoryId:{
         name: string
@@ -33,6 +34,15 @@ const BudgetTable: React.FC = () => {
     useEffect(() => {
         fetchBudgets()
     },[month, year]);
+
+    const deleteBudget = useCallback( async (id : string) => {
+        try {
+            await deleteBudgets({ id });
+            fetchBudgets();
+        } catch (error) {
+            console.log(error);
+        }
+    },[])
 
 
     return (
@@ -63,8 +73,8 @@ const BudgetTable: React.FC = () => {
                             </td>  
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-2">
-                                   <AddCategoryModel text={"Edit"}/>
-                                    <DeleteModel/>
+                                   <AddBudgetModel text="Edit" budget={item}/>
+                                    <DeleteModel id={item._id} deleteFunction={deleteBudget}/>
                                 </div>
                             </td>          
                         </tr>
