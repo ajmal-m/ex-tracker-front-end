@@ -16,7 +16,7 @@ const Navbar = memo(() => {
             <h1 className="text-white text-xl max-[400px]:text-sm">{selectedMonth} {selectedYear}</h1>
 
             <div className="flex items-center gap-3">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 max-[414px]:text-[12px]">
                     <Link to={'/'} className="text-white">Home</Link>
                     <Link to={'/setting/category'} className="text-white">Categories</Link>
                     <Link to={'/setting/budgets'}  className="text-white">Budgets</Link>
