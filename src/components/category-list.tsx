@@ -1,8 +1,30 @@
-import { memo } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import CategoryCard from "./category-card";
+import { getCategoryReport } from "../api/report.api";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
 
 const CategoryList = memo(() => {
+
+    const [reports, setReports] = useState([]);
+    const { month , year} = useSelector((store : RootState) => store.date);
+
+    const fecthCategoryReport = useCallback( async () => {
+       try {
+        const data = await getCategoryReport({ month , year});
+        console.log(data);
+        
+        setReports(data);
+      } catch (error) {
+        console.log(error);
+      }
+    },[month, year])
+
+    useEffect(() => {
+      fecthCategoryReport();
+    }, [month, year])
+
     return(
         <section className="
             py-3 px-4 grid gap-4 grid-cols-1 

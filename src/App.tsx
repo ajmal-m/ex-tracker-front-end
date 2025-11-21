@@ -46,7 +46,9 @@ function App() {
         <Route path='/setting/category' 
           element={
             <Suspense fallback={<>Loading...</>} >
-              <CategoryPage/>
+              <ProtectedRoute>
+                <CategoryPage/>
+              </ProtectedRoute>
             </Suspense>
           } 
         />
@@ -54,7 +56,9 @@ function App() {
         <Route path='/setting/budgets' 
           element={
             <Suspense fallback={<>Loading...</>} >
-              <BudgetPage/>
+              <ProtectedRoute>
+                <BudgetPage/>
+              </ProtectedRoute>
             </Suspense>
           } 
         />

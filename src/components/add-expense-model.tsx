@@ -1,9 +1,13 @@
-import { memo, useState } from "react";
+import { memo, useCallback, useState } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { createExpense } from "../api/expense.api";
 
 
 const AddExpenseModel = memo(() => {
     const [open, setOpen] = useState(false);
     const today = new Date().toISOString().slice(0, 10);
+    const { categories } = useSelector(( store : RootState ) => store.category )
 
     const [ expenseData, setExpenseData] = useState({
         categoryId:'',
@@ -15,6 +19,22 @@ const AddExpenseModel = memo(() => {
         const { name, value } = e.target;
         setExpenseData(prev => ({ ...prev, [name]: value }));
     };
+
+    const handleSubmit = useCallback( async ( e : React.FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault();
+            const data = await createExpense({
+                month : Number(expenseData.date.split('-')[1]) ,
+                year : Number(expenseData.date.split('-')[0]),
+                expense: Number(expenseData.amount),
+                categoryId: expenseData.categoryId
+            });
+            setOpen(false);
+        } catch (error) {
+            console.log(error);
+        }
+    },[expenseData])
+
     return(
         <>
             <button className="
@@ -32,16 +52,20 @@ const AddExpenseModel = memo(() => {
                             rounded border flex items-center justify-center"
                              onClick={(e) => e.stopPropagation()}
                         >
-                            <form action="" className="w-full p-4 flex flex-col gap-4">
+                            <form onSubmit={handleSubmit} className="w-full p-4 flex flex-col gap-4">
                                 <div className="flex flex-col gap-2">
                                     <label htmlFor="category" className="text-xs">Category</label>
                                     <select 
                                         name="categoryId" id="category"  
-                                        className="border border-white p-2 text-white rounded"
+                                        className="border border-white p-2 text-white rounded bg-blue-800"
                                          value={expenseData.categoryId}
                                         onChange={handleChange}
                                     >
-                                        <option value="Cate">categdqwdq</option>
+                                        {
+                                            categories.map((item, index) => (
+                                                <option value={item._id}>{item.name}</option>
+                                            ))
+                                        }
                                     </select>
                                 </div>
                                 <div className="flex flex-col gap-2">
