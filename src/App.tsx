@@ -6,6 +6,9 @@ import {Toaster} from 'react-hot-toast';
 const LoginPage = lazy(() => import('./pages/login'));
 const SignUpPage = lazy(() => import('./pages/sign-up'));
 const DashboardPage = lazy(() => import('./pages/dashboard'));
+const CategoryPage = lazy(() => import('./pages/category'));
+const BudgetPage = lazy(() => import('./pages/budgets'));
+
 
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -36,6 +39,22 @@ function App() {
           element={
             <Suspense fallback={<>Loading...</>} >
               <SignUpPage/>
+            </Suspense>
+          } 
+        />
+
+        <Route path='/setting/category' 
+          element={
+            <Suspense fallback={<>Loading...</>} >
+              <CategoryPage/>
+            </Suspense>
+          } 
+        />
+
+        <Route path='/setting/budgets' 
+          element={
+            <Suspense fallback={<>Loading...</>} >
+              <BudgetPage/>
             </Suspense>
           } 
         />
