@@ -1,4 +1,6 @@
 import React from "react";
+import AddCategoryModel from "./add-category-model";
+import DeleteModel from "./delete-model";
 
 type Product = {
     name: string;
@@ -57,22 +59,8 @@ const CategoryTable: React.FC = () => {
                             </th>
                             <td className="px-6 py-4">
                                 <div className="flex items-center gap-2">
-                                    <button
-                                        className="
-                                            px-3 py-1 bg-blue-800 text-white 
-                                            rounded font-medium cursor-pointer self-end
-                                        "
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className="
-                                            px-3 py-1 bg-red-800 text-white 
-                                            rounded font-medium cursor-pointer self-end
-                                        "
-                                    >
-                                        Delete
-                                    </button>
+                                   <AddCategoryModel text={"Edit"}/>
+                                    <DeleteModel/>
                                 </div>
                             </td>          
                         </tr>
