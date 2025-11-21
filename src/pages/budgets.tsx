@@ -1,13 +1,17 @@
 import { memo } from "react";
 import Navbar from "../components/navbar";
-import CategoryTable from "../components/category-table";
+import BudgetTable from "../components/budget-table";
+import AddBudgetModel from "../components/add-budget-model";
 
 const BudgetPage = memo(() => {
     return(
         <div className="h-screen bg-[#030712] overflow-y-auto">
            <Navbar/>
-           <section className="mt-25">
-                <CategoryTable/>
+           <section className="mt-15 px-4 py-2 flex flex-col">
+                <AddBudgetModel text="Add Budget"/>
+                <div className="mt-2">
+                    <BudgetTable/>
+                </div>
            </section>
         </div>
     )

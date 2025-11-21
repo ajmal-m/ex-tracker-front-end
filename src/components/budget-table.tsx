@@ -1,0 +1,78 @@
+import React from "react";
+import AddCategoryModel from "./add-category-model";
+import DeleteModel from "./delete-model";
+
+type Product = {
+    name: string;
+    color: string;
+    category: string;
+    price: string;
+    stock: number;
+};
+
+const products: Product[] = [
+    {
+        name: 'Apple MacBook Pro 17"',
+        color: "Silver",
+        category: "Laptop",
+        price: "$2999",
+        stock: 231,
+    },
+    {
+        name: "Microsoft Surface Pro",
+        color: "White",
+        category: "Laptop PC",
+        price: "$1999",
+        stock: 423,
+    },
+    {
+        name: "Magic Mouse 2",
+        color: "Black",
+        category: "Accessories",
+        price: "$99",
+        stock: 121,
+    },
+];
+
+const BudgetTable: React.FC = () => {
+    return (
+        <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default">
+            <table className="w-full text-sm text-left rtl:text-right text-body">
+                <thead className="text-sm text-body bg-blue-950 border-b rounded-base text-white">
+                    <tr>
+                        <th className="px-6 py-3 font-medium">Budget name</th>
+                         <th className="px-6 py-3 font-medium">Limit</th>
+                        <th className="px-6 py-3 font-medium">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {products.map((item, index) => (
+                        <tr
+                            key={index}
+                            className="bg-blue-950 border-b border-default last:border-none text-white"
+                        >
+                            <th
+                                scope="row"
+                                className="px-6 py-4 font-medium text-heading whitespace-nowrap"
+                            >
+                                {item.name}
+                            </th>
+                            <td className="px-6 py-4">
+                                600
+                            </td>  
+                            <td className="px-6 py-4">
+                                <div className="flex items-center gap-2">
+                                   <AddCategoryModel text={"Edit"}/>
+                                    <DeleteModel/>
+                                </div>
+                            </td>          
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+export default BudgetTable;
