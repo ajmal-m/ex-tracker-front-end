@@ -15,7 +15,7 @@ const CategoryList = memo(() => {
         const data = await getCategoryReport({ month , year});
         console.log(data);
         
-        setReports(data);
+        setReports(data?.datas || []);
       } catch (error) {
         console.log(error);
       }
@@ -34,9 +34,10 @@ const CategoryList = memo(() => {
         "
         >
           {
-            new Array(100).fill(8).map((_,i) => (
-                <CategoryCard/>
-            ))
+           reports.map((cat , index) =>  (
+            <CategoryCard key={index} category={cat}/>
+           ))
+            
           }
         </section>
     )

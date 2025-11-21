@@ -24,7 +24,7 @@ const AddExpenseModel = memo(() => {
         try {
             e.preventDefault();
             const data = await createExpense({
-                month : Number(expenseData.date.split('-')[1]) ,
+                month : Number(expenseData.date.split('-')[1])-1 ,
                 year : Number(expenseData.date.split('-')[0]),
                 expense: Number(expenseData.amount),
                 categoryId: expenseData.categoryId
