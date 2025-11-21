@@ -7,7 +7,7 @@ const CategoryPage = memo(() => {
     return(
         <div className="h-screen bg-[#030712] overflow-y-auto">
             <Navbar/>
-            <section className="mt-15 px-4 py-2 flex flex-col">
+            <section className="mt-15 px-4 py-2 flex flex-col max-[415px]:mt-0">
                  <AddCategoryModel text="Add Category"/>
                 <div className="mt-2">
                     <CategoryTable/>
