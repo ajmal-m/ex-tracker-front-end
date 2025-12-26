@@ -1,3 +1,36 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme{
+  --font-rubik: "Rubik", sans-serif;
+  --color-primary : #1b1b1b;
+  --color-secondary : #0B0B0B;
+  --color-primaryhover:#28282a;
+  --color-primtext:#ffffffff;
+  --color-secondtext:#ffffff99;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  overflow: hidden;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #0B0B0B;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
