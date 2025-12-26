@@ -5,6 +5,9 @@ import AuthLayout from "../layouts/auth-layout";
 const HomePage = lazy(() => import("../pages/home"));
 const SignUpPage = lazy(() => import("../pages/sign-up"));
 const LoginPage = lazy(() => import("../pages/login"));
+const CategoryPage = lazy(() => import("../pages/categories-page"));
+const BudgetsPage = lazy(() => import("../pages/budgets-page"));
+const ExpensesPage = lazy(() => import("../pages/expense-page"));
 
 const router = createBrowserRouter([
     {
@@ -14,6 +17,18 @@ const router = createBrowserRouter([
             {
                 index:true,
                 Component:HomePage
+            },
+            {
+                path:"expesnes",
+                Component:ExpensesPage
+            },
+            {
+                path:"categories",
+                Component:CategoryPage
+            },
+            {
+                path:"budgets",
+                Component:BudgetsPage
             }
         ]
     },

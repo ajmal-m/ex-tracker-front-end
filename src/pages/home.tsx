@@ -2,7 +2,7 @@ import { memo } from "react";
 
 const HomePage = memo(() => {
     return(
-        <div className="flex-1 bg-secondary rounded-2xl p-4 text-secondtext font-rubik overflow-y-auto h-[90vh]">
+        <div >
             <h1>Home Page</h1>
             <p>
                 Nunc mollis imperdiet neque vitae molestie. Maecenas accumsan dui nec ornare elementum. Etiam vestibulum auctor est nec maximus. Sed ornare eros id fringilla dignissim. Donec elementum nisl felis, eget luctus felis tempor ut. Donec pretium sit amet risus sit amet hendrerit. Donec nisi felis, porta vel orci eget, luctus porttitor risus. Nunc et purus eu lectus elementum semper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris pretium sapien risus, sed rhoncus mauris gravida quis. Praesent varius non est convallis faucibus. Aliquam suscipit diam quis lectus ultricies congue.

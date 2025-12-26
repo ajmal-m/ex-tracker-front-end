@@ -9,7 +9,9 @@ const MainLayout = memo(() => {
             <Navbar/>
             <div className="flex-1 flex justify-between" >
                 <Sidebar/>
-                <Outlet/>
+                <div className="flex-1 bg-secondary rounded-2xl p-4 text-secondtext font-rubik overflow-y-auto h-[90vh]">
+                    <Outlet/>
+                </div>
                 <EndSideBar/>
             </div>
             <Navbar/>
